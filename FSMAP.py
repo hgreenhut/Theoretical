@@ -6,10 +6,13 @@ with open("datasets/HMCampusGraph.csv", "r") as f:
     g = list(graph)
 
 
-visited = []
-adjacent = []
-backpath = {}
-route = []
+first = "Olshan"
+final = "B02L"
+
+bfs_visited = []
+bfs_adjacent = []
+bfs_backpath = {}
+bfs_route = []
 
 def bfs(graph, visited, first, final):
     start = ""
@@ -21,39 +24,36 @@ def bfs(graph, visited, first, final):
             end = g[i][0]
     visited.append(start)
     #print("visited" , visited)
-    adjacent.append(start)
+    bfs_adjacent.append(start)
    #print("adj", adjacent)
-    backpath[start] = start
+    bfs_backpath[start] = start
     #print("backpath", backpath)
-    while adjacent:
-        m = adjacent.pop(0)
+    while bfs_adjacent:
+        m = bfs_adjacent.pop(0)
         #print(m)
         for neighbour in g[int(m)][2].split(","):
             if neighbour not in visited:
-                backpath[neighbour] = m
+                bfs_backpath[neighbour] = m
                 if neighbour == end:
                     #print("found!")
-                    route.append(g[int(neighbour)][1])
+                    bfs_route.append(g[int(neighbour)][1])
                     #print(neighbour)
                     
-                    while backpath[neighbour] != neighbour:
+                    while bfs_backpath[neighbour] != neighbour:
                      
-                        route.append(g[int(backpath[neighbour])][1])
-                        neighbour = backpath[neighbour]
+                        bfs_route.append(g[int(bfs_backpath[neighbour])][1])
+                        neighbour = bfs_backpath[neighbour]
 
                 
                 visited.append(neighbour)
-                adjacent.append(neighbour)
-    route.reverse()
-    return route
+                bfs_adjacent.append(neighbour)
+    bfs_route.reverse()
+    return bfs_route
 
-first = "Olshan"
-final = "B02L"
-path = []
-print(bfs(graph, visited, first, final))
+print(bfs(graph, bfs_visited, first, final))
 
 dfs_visited = []
-
+dfs_backpath = {}
 dfs_route = []
 
 def dfs(visited, first, final, parent = 0):
@@ -72,16 +72,16 @@ def dfs(visited, first, final, parent = 0):
         start_index = first
         end_index = final
     if start_index not in visited:
-        backpath[start_index] = parent
+        dfs_backpath[start_index] = parent
         #backpath[]
         if start_index == end_index:
             #print("found it!")
             #print(backpath)
             dfs_route.append(g[int(start_index)][1])
-            while backpath[start_index] != start_index:
+            while dfs_backpath[start_index] != start_index:
                      
-                        dfs_route.append(g[int(backpath[start_index])][1])
-                        start_index = backpath[start_index]
+                        dfs_route.append(g[int(dfs_backpath[start_index])][1])
+                        start_index = dfs_backpath[start_index]
             dfs_route.reverse()
             if dfs_route.count != 0:
                 #print("hi")
