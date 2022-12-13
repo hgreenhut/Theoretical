@@ -14,7 +14,7 @@ bfs_adjacent = []
 bfs_backpath = {}
 bfs_route = []
 
-def bfs(graph, visited, first, final):
+def bfs(visited, first, final):
     start = ""
     end = ""
     for i in range(len(g)):
@@ -50,7 +50,7 @@ def bfs(graph, visited, first, final):
     bfs_route.reverse()
     return bfs_route
 
-print(bfs(graph, bfs_visited, first, final))
+print(bfs(bfs_visited, first, final))
 
 dfs_visited = []
 dfs_backpath = {}
