@@ -67,17 +67,32 @@ def bfs(visited, first, final):
 
 bfs(bfs_visited, first, final)
 
+
+# Initialize dfs variables
+
+# The visited vertexes
 dfs_visited = []
+
+# Dictionary that stores the vertex used to access another vertex. Child : Parent
 dfs_backpath = {}
+
+# Final route
 dfs_route = []
 
-def dfs(visited, first, final, parent = 0):
+# DFS is implemented recursively. 
+# It calls itself on the neighbours of the starting vertex, and then on their neighbours,
+# and so on until it finds the final vertex.
+def dfs(visited, first, final, parent = -1):
+    # Find the start and end indexes. On the first call, it finds the indexes for the names
+    # of the first and final indexes. On subsequent calls, it passes forward the current index
+    # as the "first" index
     start_index = ""
     end_index = ""
     if len(visited) == 0:    
         for i in range(len(g)):
             if g[i][1] == first:
                 start_index = g[i][0]
+                # parent is used to keep track of the previous vertex
                 parent =  g[i][0]
             if g[i][1] == final:
                 end_index = g[i][0]
@@ -88,16 +103,24 @@ def dfs(visited, first, final, parent = 0):
         dfs_backpath[start_index] = parent
         if start_index == end_index:
             dfs_route.append(g[int(start_index)][1])
+            # This while loop backtracks through the backpath dictionary, starting with the final vertex
+            # until the first vertex is reached
             while dfs_backpath[start_index] != start_index:
                         dfs_route.append(g[int(dfs_backpath[start_index])][1])
                         start_index = dfs_backpath[start_index]
+            # The resulting route goes from the final -> first, so flip it
             dfs_route.reverse()
+
+            # Once we have an answer, print it
             if dfs_route.count != 0:
                 print(dfs_route)
             else:
                 return None
         visited.append(start_index)
+        # for each neighbour, recursively call dfs. This allows the algorithm to follow a path until it hits a dead-end,
+        # backtrack, and then keep going
         for neighbour in g[int(start_index)][2].split(","):
+            # The neighbour takes the place of the "first" index, and the old first index becomes the parent
             dfs(visited, neighbour, end_index, start_index)
 
 dfs(dfs_visited, first, final)
