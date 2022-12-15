@@ -65,7 +65,7 @@ def bfs(visited, first, final):
     bfs_route.reverse()
     print(bfs_route) 
 
-bfs(bfs_visited, first, final)
+#bfs(bfs_visited, first, final)
 
 
 # Initialize dfs variables
@@ -123,4 +123,40 @@ def dfs(visited, first, final, parent = -1):
             # The neighbour takes the place of the "first" index, and the old first index becomes the parent
             dfs(visited, neighbour, end_index, start_index)
 
-dfs(dfs_visited, first, final)
+#dfs(dfs_visited, first, final)
+
+
+# Following code is modified BFS used to find eccentricity of the graph
+ecc_visited = []
+
+ecc_adjacent = []
+
+ecc_backpath = {}
+
+
+def eccentricity(visited, start):
+    length = 1
+    visited.append(start)
+    ecc_adjacent.append(start)
+    while ecc_adjacent:
+        m = ecc_adjacent.pop(0)
+        for neighbour in g[int(m)][2].split(","):
+            if neighbour not in visited:
+                ecc_backpath[neighbour] = m
+               # print(neighbour)
+                visited.append(neighbour)
+                ecc_adjacent.append(neighbour)
+
+    last_neighbour = visited[-1]
+    print("furthest away: " + last_neighbour)
+    while ecc_backpath[last_neighbour] != start:
+            length += 1
+            last_neighbour = ecc_backpath[last_neighbour]
+            print("last",last_neighbour)
+        
+    print(length)
+    print(ecc_backpath["6"])
+
+    # The resulting route goes from the final -> first, so flip it
+
+eccentricity(ecc_visited, 147)
