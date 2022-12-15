@@ -1,6 +1,5 @@
 import csv
 
-
 # Stores adjacency list as a list of lists. Index of vertex corresponds with its location in the list
 with open("datasets/HMCampusGraph.csv", "r") as f:
     graph = csv.reader(f)
@@ -33,7 +32,7 @@ bfs_route = []
 # then the same for the neighbours of the vertexes on the adjacent list,
 # and so on until the final vertex is found
 def bfs(visited, first, final):
-    # Find the index of the first & final vertexes.
+    # Find the indexes of the first & final vertexes.
     start = ""
     end = ""
     for i in range(len(g)):
@@ -65,7 +64,7 @@ def bfs(visited, first, final):
     bfs_route.reverse()
     print(bfs_route) 
 
-#bfs(bfs_visited, first, final)
+bfs(bfs_visited, first, final)
 
 
 # Initialize dfs variables
@@ -123,7 +122,7 @@ def dfs(visited, first, final, parent = -1):
             # The neighbour takes the place of the "first" index, and the old first index becomes the parent
             dfs(visited, neighbour, end_index, start_index)
 
-#dfs(dfs_visited, first, final)
+dfs(dfs_visited, first, final)
 
 
 # Following code is modified BFS used to find eccentricity of the graph
@@ -152,11 +151,7 @@ def eccentricity(visited, start):
     while ecc_backpath[last_neighbour] != start:
             length += 1
             last_neighbour = ecc_backpath[last_neighbour]
-            print("last",last_neighbour)
         
-    print(length)
-    print(ecc_backpath["6"])
+    print("length =", length)
 
-    # The resulting route goes from the final -> first, so flip it
-
-eccentricity(ecc_visited, 147)
+#eccentricity(ecc_visited, 147)
